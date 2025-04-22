@@ -1,0 +1,3 @@
+/Users/luis/Desktop/object_detection/build/CMakeFiles/onnx_test.dir
+/Users/luis/Desktop/object_detection/build/CMakeFiles/edit_cache.dir
+/Users/luis/Desktop/object_detection/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10)
+project(object_detection)
+
+find_package(OpenCV REQUIRED)
+if (NOT OpenCV_FOUND)
+    message(FATAL_ERROR "OpenCV library not found. Please set OpenCV_DIR.")
+endif()
+
+include_directories(${OpenCV_INCLUDE_DIRS})
+link_directories(${OpenCV_LIB_DIR})
+
+add_executable(onnx_test srcs/onnx_test.cpp)
+target_link_libraries(onnx_test ${OpenCV_LIBS})
+
+# Remove this line:
+# set_property(TARGET onnx_test PROPERTY RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
