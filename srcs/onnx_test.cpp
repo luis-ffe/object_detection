@@ -1,3 +1,5 @@
+
+
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 #include <iostream>
@@ -9,7 +11,7 @@ using namespace std;
 
 int main() {
     // Load the YOLOv5 Nano (tiny) ONNX model.
-    Net net = readNetFromONNX("../models_onnx/yolov5n.onnx");  // Replace with your model filename if needed.
+    Net net = readNetFromONNX("../models_onnx/yolov5n_simple.onnx");  // Replace with your model filename if needed.
     if (net.empty()) {
         cerr << "Failed to load model." << endl;
         return -1;
@@ -31,13 +33,13 @@ int main() {
     };
 
     // Open the video file. if you need to use a webcam, replace "road8.mp4" with 0.
-    // For example, to use a webcam, uncomment the line below:  
+    // For example, to use a webcam, uncomment the line below:
 
     //VideoCapture cap(0);
 
     // For testing with a video file, use the line below:
     VideoCapture cap("../media/road8.mp4");
-    
+
     // Replace "road8.mp4" with your video path.
     if (!cap.isOpened()) {
         cerr << "Error opening video file." << endl;
@@ -65,7 +67,7 @@ int main() {
 
         // Create a blob from the resized image.
         Mat blob;
-        blobFromImage(resizedFrame, blob, 1.0/255.0, Size(netWidth, netHeight), Scalar(), true, false);
+        blobFromImage(resizedFrame, blob, 1.0/255.0, Size(netWidth, netHeight), Scalar(), true, false, CV_32F); // Explicit CV_32F
         net.setInput(blob);
 
         // Run inference.
@@ -88,11 +90,11 @@ int main() {
                 if (maxScore >= confThreshold) {
                     float cx = data[0];
                     float cy = data[1];
-                    float w  = data[2];
-                    float h  = data[3];
+                    float w = data[2];
+                    float h = data[3];
 
-                    int left = static_cast<int>((cx - w/2) * frame.cols / netWidth);
-                    int top  = static_cast<int>((cy - h/2) * frame.rows / netHeight);
+                    int left = static_cast<int>((cx - w / 2) * frame.cols / netWidth);
+                    int top = static_cast<int>((cy - h / 2) * frame.rows / netHeight);
                     int boxW = static_cast<int>(w * frame.cols / netWidth);
                     int boxH = static_cast<int>(h * frame.rows / netHeight);
 
@@ -118,7 +120,7 @@ int main() {
             Size labelSize = getTextSize(label, FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseline);
             int topLabel = max(box.y, labelSize.height);
             rectangle(frame, Point(box.x, topLabel - labelSize.height),
-                      Point(box.x + labelSize.width, topLabel + baseline), Scalar(0, 255, 0), FILLED);
+                Point(box.x + labelSize.width, topLabel + baseline), Scalar(0, 255, 0), FILLED);
             putText(frame, label, Point(box.x, topLabel), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 0), 1);
         }
 
@@ -137,4 +139,3 @@ int main() {
 
     return 0;
 }
-
