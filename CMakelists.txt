@@ -7,10 +7,7 @@ if (NOT OpenCV_FOUND)
 endif()
 
 include_directories(${OpenCV_INCLUDE_DIRS})
-link_directories(${OpenCV_LIB_DIR})
+link_directories(${OpenCV_LIB_DIRS})
 
 add_executable(onnx_test srcs/onnx_test.cpp)
 target_link_libraries(onnx_test ${OpenCV_LIBS})
-
-# Remove this line:
-# set_property(TARGET onnx_test PROPERTY RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
